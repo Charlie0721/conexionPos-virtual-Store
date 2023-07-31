@@ -1,20 +1,23 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import Main from '../components/main.vue';
+import Products from '../products/components/GetProductsByWarehouse.vue'; 
 
-const routes: Array<RouteRecordRaw> = [
-
-    {
-        path: '/',
-        name: 'main',
-        component: Main
-    },
-
-
-]
+const routes = [
+  {
+    path: '/',
+    name: 'main',
+    component: Main,
+  },
+  {
+    path: '/products/:idalmacen',
+    name: 'products-by-idalmacen',
+    component: Products,
+  },
+];
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes
-})
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
+});
 
-export default router
+export default router;
