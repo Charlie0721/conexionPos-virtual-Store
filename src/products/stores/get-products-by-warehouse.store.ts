@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia';
 import { ProductsByWarehouseservice } from '../services/get-products-by-warehouse.service';
-import { useGetWarehouseStore } from '../../stores/getWarehouse.store'
 const productsByWareHosueService = new ProductsByWarehouseservice();
-//const getWarehouseStore = useGetWarehouseStore();
 export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore', {
     state: () => {
         return {
@@ -15,10 +13,10 @@ export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore
         }
     },
     actions: {
-        async getAllProducts(warehouseId:number,page: number, limit: number, barcode: string, description: string) {
+        async getAllProducts(warehouseId: number, page: number, limit: number, barcode: string, description: string) {
 
             try {
-                this.warehouseId=warehouseId
+                this.warehouseId = warehouseId
                 this.page = page;
                 this.limit = limit;
                 this.barcode = barcode;
