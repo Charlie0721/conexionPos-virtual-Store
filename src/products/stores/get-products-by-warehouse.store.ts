@@ -32,10 +32,55 @@ export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore
                 console.log(error)
             }
 
-        }
+        },
+        async nextPage() {
 
+            this.page++
+            return this.getAllProducts(this.warehouseId, this.page, this.limit, this.barcode, this.description)
 
+        },
+        async previousPage() {
+            if (this.page > 1) {
 
+                this.page--
+                return this.getAllProducts(this.warehouseId, this.page, this.limit, this.barcode, this.description)
+           }
+        },
+        async searchProduct(value: string) {
+            if (value.length > 0) {
+                const isNumeric = !isNaN(value);
+                if (isNumeric) {
+                    this.barcode = value;
+                    this.description = '';
+                } else {
+                    this.description = value;
+                    this.barcode = '';
+                }
+            } else {
+                this.description = '';
+                this.barcode = '';
+                return this.getAllProducts(this.warehouseId,
+                    this.page,
+                    this.limit,
+                    this.barcode,
+                    this.description)
+            }
+
+            try {
+              //  this.page = 1;
+                const productsResponse = await productsByWareHosueService.getProductsBywarehouseId(
+                    this.warehouseId,
+                    this.page,
+                    this.limit,
+                    this.barcode,
+                    this.description
+                );
+                this.products = productsResponse.data;
+                return this.products;
+            } catch (error) {
+                console.log(error);
+            }
+        },
     }
 
 })

@@ -1,15 +1,41 @@
 <template>
-    <div class="container-fluid mx-auto">
+    <Navbar />
+    <br>
+    <div class="container">
+        <div class="row w-100">
+            <div class="card col-md-8 mb-8">
+                <div class="card-body d-flex flex-column align-items-center">
+                    <div class="d-flex mb-2">
+                        <button class="btn btn-dark mr-2" @click="productsByWarehouseStore.previousPage"
+                            v-if="productsByWarehouseStore.page > 0">
+                            Anterior
+                        </button>
+                        <span class="mx-2">pagina: {{ productsByWarehouseStore.page }}</span>
+                        <button class="btn btn-dark mr-2" @click="productsByWarehouseStore.nextPage">Siguiente</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="search" class="form-control" placeholder="Buscar Producto" v-model="searchInput"
+                            @input="handleSearchInput" @keypress.enter="searchoneProduct()" />
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+
+        <br>
         <div class="row w-100">
 
-            <div class="col-md-4 mb-4" style="width: 18rem;" v-for="(product, index) in productsByWarehouseStore.products "
+            <div class="col-md-4 mb-4" style="width: 18rem;" v-for="product in productsByWarehouseStore.products "
                 :key="product.idproducto">
                 <div class="card card text-dark bg-ligth">
 
-                    <img :src="product.url_foto || defaultImageUrl" class="card-img-fixed card-img-top" alt="...">
+                    <img :src="product.url_foto || defaultImageUrl" class="card-img-fixed card-img-top centered-img"
+                        alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">{{ index + 1 }}. {{ product.descripcion }} </h5>
+                        <h5 class="card-title">{{ product.descripcion }} </h5>
                         <p class="card-text">Stock: {{ product.cantidad }}
                         </p>
                         <p class="card-text">Código: {{ product.codigo }}</p>
@@ -19,8 +45,6 @@
                         <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
@@ -31,23 +55,19 @@
   
 
 <script setup lang="ts">
-import { onBeforeMount, reactive, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductsByWarehouseStore } from '../stores/get-products-by-warehouse.store';
 import defaultImageUrl from '../../assets/logo_celulares.png';
+import Navbar from '../../components/navbar.vue'
 const productsByWarehouseStore = useProductsByWarehouseStore();
-let page = ref(1);
-let limit = ref(10);
 let barcode = ref("");
 let description = ref("");
-let products = reactive<any>([]);
 const route = useRoute();
-//let defaultImageUrl = '@/assets/logo_celulares.png'
-
 let warehouseId = Number(route.params.idalmacen);
-
+const searchInput = ref("");
 onBeforeMount(async () => {
-    await getProducts(warehouseId, page.value, limit.value, barcode.value, description.value);
+    await getProducts(warehouseId, productsByWarehouseStore.page, productsByWarehouseStore.limit, barcode.value, description.value);
 });
 
 const getProducts = async (
@@ -64,8 +84,19 @@ const getProducts = async (
         barcode,
         description
     );
-    console.log(defaultImageUrl)
     return products
+};
+
+const searchoneProduct = async () => {
+    searchInput.value
+    productsByWarehouseStore.searchProduct(searchInput.value.trim().toUpperCase())
+}
+const handleSearchInput = () => {
+    if (!searchInput.value.trim()) {
+        productsByWarehouseStore.page = 1;
+        productsByWarehouseStore.limit = 10;
+        searchoneProduct();
+    }
 };
 </script>
 <style scoped>
@@ -82,5 +113,10 @@ const getProducts = async (
     width: 170px;
     height: 170px;
     object-fit: cover;
+}
+
+.centered-img {
+    margin: 0 auto;
+    display: block;
 }
 </style>
