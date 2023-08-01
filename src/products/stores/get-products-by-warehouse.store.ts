@@ -26,7 +26,8 @@ export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore
                     this.limit,
                     this.barcode,
                     this.description)
-                console.log(productsResponse.data)
+                this.products = productsResponse.data
+                return this.products
             } catch (error) {
                 console.log(error)
             }
