@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { GetCategoriesByWarehouseService } from '../service/getCategoriesByIwarehouse.service'
-
+import {CategoriesInterface} from '../interface/category.interface'
 const getCategoriesByWarehouse = new GetCategoriesByWarehouseService();
 
 export const useGetCategoriesByWarehouseStore = defineStore('getCategoriesByWarehouseStore', {
@@ -9,7 +9,7 @@ export const useGetCategoriesByWarehouseStore = defineStore('getCategoriesByWare
     state: () => {
 
         return {
-            categories: [] as any,
+            categories: [] as Array<CategoriesInterface>,
             limit: 10 as number,
             page: 1 as number,
             categorieName: '' as string

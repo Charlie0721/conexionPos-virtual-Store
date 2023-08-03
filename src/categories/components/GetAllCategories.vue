@@ -13,6 +13,7 @@
                         <span class="mx-2">pagina: {{ getCategoriesByWarehouseStore.page }}</span>
                         <button class="btn btn-dark mr-2" @click="getCategoriesByWarehouseStore.nextPage">Siguiente</button>
                     </div>
+
                     <div class="input-group">
                         <input type="search" class="form-control" placeholder="Buscar Categoria" v-model="searchInput"
                             @input="handleSearchInput" @keypress.enter="searchOneCategory()" />
@@ -25,6 +26,7 @@
 
         </div>
         <br>
+        <h2 class="text-center">CATEGORIAS</h2><br>
         <div class="accordion bg-dark " id="accordionExample">
             <div v-for="category in getCategoriesByWarehouseStore.categories" :key="category.idregistro">
                 <div class="accordion-item">
@@ -35,11 +37,9 @@
                         </button>
                     </h2>
                     <div v-if="activeCategory === category.idregistro" class="accordion-collapse collapse show">
+                     
                         <div class="accordion-body">
-                            <strong>{{ category.idregistro }}. </strong> codigo: {{ category.codigo }}
-                        </div>
-                        <div class="accordion-body">
-                            <button class="btn btn-primary"
+                            <button class="btn btn-primary btn-block w-100"
                                 @click="showProducts(getWareHouseStore.warehouseId, category.nombre)">Ver Productos</button>
                         </div>
 
@@ -68,8 +68,8 @@ onMounted(async () => {
 })
 const getWarehouse = async () => {
     const warehouse = await getWareHouseStore.getWarehouse()
-   
-  }
+
+}
 const getCategoriesFunction = async (
     page: number,
     limit: number,
