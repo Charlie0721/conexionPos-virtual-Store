@@ -67,7 +67,7 @@ export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore
             }
 
             try {
-              //  this.page = 1;
+            
                 const productsResponse = await productsByWareHosueService.getProductsBywarehouseId(
                     this.warehouseId,
                     this.page,
