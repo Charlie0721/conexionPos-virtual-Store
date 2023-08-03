@@ -52,7 +52,7 @@
 
 
 <script  setup lang="ts" >
-import { onMounted, ref, Ref, reactive } from 'vue';
+import { onMounted, ref, Ref } from 'vue';
 import { useGetCategoriesByWarehouseStore } from '../store/get-categories-store'
 import Navbar from '../../components/navbar.vue'
 import { useGetWarehouseStore } from '../../stores/getWarehouse.store';
