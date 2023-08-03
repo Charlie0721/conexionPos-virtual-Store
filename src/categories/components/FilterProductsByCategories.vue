@@ -2,6 +2,29 @@
     <Navbar />
     <br>
     <div class="container">
+        <div class="row w-100">
+            <div class="card col-md-8 mb-8">
+                <div class="card-body d-flex flex-column align-items-center">
+                    <div class="d-flex mb-2">
+                        <button class="btn btn-dark mr-2" @click="productBycategoriesStore.previousPage"
+                            v-if="productBycategoriesStore.page > 0">
+                            Anterior
+                        </button>
+                        <span class="mx-2">pagina: {{ productBycategoriesStore.page }}</span>
+                        <button class="btn btn-dark mr-2" @click="productBycategoriesStore.nextPage">Siguiente</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="search" class="form-control" placeholder="Buscar Producto" v-model="searchInput"
+                            @input="handleSearchInput" @keypress.enter="searchoneProduct()" />
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
         <h2 class="text-center">CATEGORIA: {{ categoryName }}</h2>
         <div class="row w-100">
 
@@ -28,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router';
 import { useProductsByCategories } from '../store/get-products-by-categories.store'
 import defaultImageUrl from '../../assets/logo_celulares.png';
@@ -37,19 +60,29 @@ const productBycategoriesStore = useProductsByCategories();
 const route = useRoute();
 let warehouseId = Number(route.params.idalmacen);
 let categoryName = String(route.params.nombre);
-
+const searchInput = ref("");
 onMounted(async () => {
 
-    await getProduts(warehouseId, categoryName, productBycategoriesStore.page, productBycategoriesStore.limit)
+    await getProduts(warehouseId, categoryName, productBycategoriesStore.page, productBycategoriesStore.limit, productBycategoriesStore.description)
 
 })
 
-async function getProduts(warehouseId: number, categoryName: string, page: number, limit: number) {
+async function getProduts(warehouseId: number, categoryName: string, page: number, limit: number, description: string) {
 
-    const productsByCategories = await productBycategoriesStore.getProductsByCategories(warehouseId, categoryName, page, limit);
+    const productsByCategories = await productBycategoriesStore.getProductsByCategories(warehouseId, categoryName, page, limit,description);
     return productsByCategories
 }
-
+const searchoneProduct = async () => {
+    searchInput.value
+    productBycategoriesStore.searchProduct(searchInput.value.trim().toUpperCase())
+}
+const handleSearchInput = () => {
+    if (!searchInput.value.trim()) {
+        productBycategoriesStore.page = 1;
+        productBycategoriesStore.limit = 10;
+        searchoneProduct();
+    }
+};
 </script>
 
 <style scoped>

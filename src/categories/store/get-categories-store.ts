@@ -56,7 +56,6 @@ export const useGetCategoriesByWarehouseStore = defineStore('getCategoriesByWare
                 this.categorieName = ""
                 return this.getCategories(this.page, this.limit, this.categorieName)
             }
-
             try {
 
                 const categoryResponse = await getCategoriesByWarehouse.getCategories(this.page,
