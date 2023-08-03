@@ -12,25 +12,16 @@
             <a class="nav-link active" aria-current="page"> <router-link to="/categories">Categorias</router-link></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page">  <router-link :to="'/products/' + getWareHouseStore.warehouseId">Productos</router-link></a>
+            <a class="nav-link active" aria-current="page"> <router-link
+                :to="'/products/' + getWareHouseStore.warehouseId">Productos</router-link></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
-            </a>
-
-          </li>
           <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            <a class="nav-link disabled">Disabled</a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
       </div>
     </div>
   </nav>
@@ -42,7 +33,7 @@ import { onMounted, reactive } from 'vue'
 import { useGetWarehouseStore } from '../stores/getWarehouse.store'
 const getWareHouseStore = useGetWarehouseStore();
 getWareHouseStore.warehouseId
-onMounted(async()=>{
+onMounted(async () => {
   await getWarehouse()
 })
 
