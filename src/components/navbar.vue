@@ -16,7 +16,7 @@
                 :to="'/products/' + getWareHouseStore.warehouseId">Productos</router-link></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link"><router-link to="/login/conexion-pos-user">Login</router-link></a>
           </li>
           <li class="nav-item">
             <a class="navbar-brand" href="/conexion-pos-user">Registrar usuario de Conexion Pos</a>

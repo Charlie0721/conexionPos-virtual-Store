@@ -4,6 +4,8 @@ import Products from '../products/components/GetProductsByWarehouse.vue';
 import CategoriesWarehouse from '.././categories/components/GetAllCategories.vue'
 import ProductsByCategories from '.././categories/components/FilterProductsByCategories.vue'
 import CxposUser from '../conexion-pos-user/component/ConexionPosUser.vue'
+import Signup from '../users/components/Signup.vue'
+import Login from '../users/components/Login.vue'
 const routes = [
   {
     path: '/',
@@ -29,6 +31,16 @@ const routes = [
     path: '/conexion-pos-user',
     name: 'conexion-pos-user',
     component: CxposUser,
+  },
+  {
+    path: '/signup/conexion-pos-user',
+    name: 'conexion-pos-user-signup',
+    component: Signup,
+  },
+  {
+    path: '/login/conexion-pos-user',
+    name: 'conexion-pos-user-login',
+    component: Login,
   },
 ];
 

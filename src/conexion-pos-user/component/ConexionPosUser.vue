@@ -21,7 +21,7 @@
                                     placeholder="Ingrese su contraseña">
                             </div>
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-dark">Continuar con el Registro</button>
+                                <button type="submit" class="btn btn-dark">Continuar</button>
                             </div>
                         </form>
                     </div>
@@ -36,7 +36,8 @@
 import { onMounted, reactive, } from 'vue';
 import Navbar from '../../components/navbar.vue'
 import Swal from 'sweetalert2';
-import { USER_CONEXION_POS } from '../constants/constants'
+import { USER_CONEXION_POS } from '../constants/constants';
+import router from '../../router/index';
 const posUser = reactive<any>({
     user: "",
     password: "",
@@ -80,15 +81,19 @@ class ConexionPosLoginComponent {
                 icon: 'warning',
                 confirmButtonText: 'Aceptar'
             });
-            posUser.user=""
+            posUser.user = ""
             posUser.password = "";
             return
         }
         if (user === USER_CONEXION_POS.user && posUser.password === USER_CONEXION_POS.password) {
-
-            console.log(`Usuario ${posUser.user} Correcto`)
+            Swal.fire({
+                title: '¡CONFIRMACIÓN!',
+                text: 'Usuario y contraseña validos !',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+            router.push("/signup/conexion-pos-user")
         } else {
-
             Swal.fire({
                 title: '¡Atención!',
                 text: 'Usuario ó contraseña no valido !',
