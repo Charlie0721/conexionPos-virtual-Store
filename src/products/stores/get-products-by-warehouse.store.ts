@@ -44,11 +44,12 @@ export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore
 
                 this.page--
                 return this.getAllProducts(this.warehouseId, this.page, this.limit, this.barcode, this.description)
-           }
+            }
         },
+
         async searchProduct(value: string) {
             if (value.length > 0) {
-                const isNumeric = !isNaN(value);
+                const isNumeric = !isNaN(Number(value));
                 if (isNumeric) {
                     this.barcode = value;
                     this.description = '';
@@ -59,15 +60,10 @@ export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore
             } else {
                 this.description = '';
                 this.barcode = '';
-                return this.getAllProducts(this.warehouseId,
-                    this.page,
-                    this.limit,
-                    this.barcode,
-                    this.description)
+                return this.getAllProducts(this.warehouseId, this.page, this.limit, this.barcode, this.description);
             }
 
             try {
-            
                 const productsResponse = await productsByWareHosueService.getProductsBywarehouseId(
                     this.warehouseId,
                     this.page,
@@ -80,7 +76,11 @@ export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore
             } catch (error) {
                 console.log(error);
             }
-        },
+        }
+
+
+
+
     }
 
 })

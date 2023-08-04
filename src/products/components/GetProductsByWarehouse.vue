@@ -92,7 +92,7 @@ const searchoneProduct = async () => {
     productsByWarehouseStore.searchProduct(searchInput.value.trim().toUpperCase())
 }
 const handleSearchInput = () => {
-    if (!searchInput.value.trim()) {
+    if (!searchInput.value.trim().toUpperCase()) {
         productsByWarehouseStore.page = 1;
         productsByWarehouseStore.limit = 10;
         searchoneProduct();

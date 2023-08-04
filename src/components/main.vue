@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue';
+import { onMounted } from 'vue';
 import { useGetWarehouseStore } from '.././stores/getWarehouse.store';
 import router from '../router/index';
 
@@ -18,9 +18,10 @@ onMounted(async () => {
     await getWarehouseFunction()
 })
 
-let warehouse = reactive<any>([])
+
 const getWarehouseFunction = async () => {
-    warehouse = await getWarehouseStore.getWarehouse()
+    const warehouse = await getWarehouseStore.getWarehouse()
+    return warehouse
 }
 
 const goToProducts = async (warehouseId: number) => {

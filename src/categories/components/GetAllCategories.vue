@@ -68,6 +68,7 @@ onMounted(async () => {
 })
 const getWarehouse = async () => {
     const warehouse = await getWareHouseStore.getWarehouse()
+    return warehouse
 
 }
 const getCategoriesFunction = async (

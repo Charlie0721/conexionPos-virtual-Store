@@ -29,7 +29,7 @@
 
 
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
+import { onMounted } from 'vue'
 import { useGetWarehouseStore } from '../stores/getWarehouse.store'
 const getWareHouseStore = useGetWarehouseStore();
 getWareHouseStore.warehouseId
@@ -37,9 +37,9 @@ onMounted(async () => {
   await getWarehouse()
 })
 
-let warehouse = reactive<any>([])
 const getWarehouse = async () => {
-  warehouse = await getWareHouseStore.getWarehouse()
+  const warehouse = await getWareHouseStore.getWarehouse()
+  return warehouse
 }
 
 </script>
