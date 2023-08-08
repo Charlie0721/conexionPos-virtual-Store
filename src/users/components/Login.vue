@@ -69,9 +69,20 @@ class LoginUserComponent {
             user.password = "";
             return
         }
+        const response: any = await loginUserStore.login(user)
+        console.log(response)
         sessionStorage.removeItem('authToken');
-        const response:any = await loginUserStore.login(user)
-        if(!response){
+        if (loginUserStore.jwt) {
+
+            Swal.fire({
+                title: '¡Confirmado!',
+                text: 'Usuario Valido !',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+            router.push('/products')
+            return response
+        } else {
             Swal.fire({
                 title: '¡Atención!',
                 text: `${loginUserStore.errorData}`,
@@ -81,27 +92,8 @@ class LoginUserComponent {
             user.username = "";
             user.password = "";
             return
+
         }
-        if (!loginUserStore.jwt) {
-            Swal.fire({
-                title: '¡Atención!',
-                text: `${loginUserStore.errorData}`,
-                icon: 'warning',
-                confirmButtonText: 'Aceptar'
-            });
-            user.username = "";
-            user.password = "";
-            return
-         
-        }
-         Swal.fire({
-            title: '¡Confirmado!',
-            text: 'Usuario Valido !',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-        });
-        router.push('/products')
-        return response
 
     }
 

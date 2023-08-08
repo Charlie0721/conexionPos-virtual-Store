@@ -9,11 +9,12 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { useAllProductsStore } from '../stores/get-all-products.store';
-//import router from '../../router/index';
-//import Swal from 'sweetalert2';
+import router from '../../router/index';
+import Swal from 'sweetalert2';
 import Navbar from '../../components/navbar.vue'
 
 const allProductsStore = useAllProductsStore();
+
 
 onMounted(async () => {
     try {
@@ -42,6 +43,17 @@ class ProductsComponent {
         barcode: string,
         description: string) {
         const products = await allProductsStore.getProducts(page, limit, barcode, description);
+
+            if(allProductsStore.errorToken==='Unauthorized'){
+                Swal.fire({
+                    title: '¡Atención!',
+                text: 'No esta autorizado !',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+                })
+                router.push('/login/conexion-pos-user')
+            }
+
         return products;
     }
 }

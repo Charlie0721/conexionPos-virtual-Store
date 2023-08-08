@@ -11,7 +11,7 @@ const axiosInstance: AxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const storedToken = sessionStorage.getItem('authToken');
+        const storedToken = localStorage.getItem('authToken');
         if (storedToken) {
             config.headers['Authorization'] = `Bearer ${storedToken}`;
         }
@@ -27,9 +27,9 @@ axiosInstance.interceptors.response.use(
         const loginUserStore = useloginUserStore()
         const newToken = loginUserStore.jwt
         if (newToken) {
-            sessionStorage.setItem('authToken', newToken);
+            localStorage.setItem('authToken', newToken);
         } else {
-            sessionStorage.removeItem('authToken');
+            localStorage.removeItem('authToken');
         }
         return response;
     },

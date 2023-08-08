@@ -12,7 +12,7 @@ export const useAllProductsStore = defineStore('allProductsStore', {
         barcode: '' as string,
         description: '' as string,
         errorToken: '' as string,
-        authToken: sessionStorage.getItem('authToken') || null,
+        authToken: localStorage.getItem('authToken') || null,
     }),
     actions: {
         async getProducts(page: number, limit: number, barcode: string, description: string) {
