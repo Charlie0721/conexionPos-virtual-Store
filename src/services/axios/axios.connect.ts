@@ -1,24 +1,20 @@
-import axios, { type AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
 import { URI_API } from '../environmentVariables';
+import { useloginUserStore } from '../../users/stores/login.store'
 
 const axiosInstance: AxiosInstance = axios.create({
-
-
     baseURL: URI_API,
     headers: {
-
         'Content-Type': 'application/json',
     },
 });
 
-let token: string | null = null;
-
 axiosInstance.interceptors.request.use(
     (config) => {
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
+        const storedToken = sessionStorage.getItem('authToken');
+        if (storedToken) {
+            config.headers['Authorization'] = `Bearer ${storedToken}`;
         }
-
         return config;
     },
     (error) => {
@@ -28,7 +24,13 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
     (response) => {
-        token = response.data.token;
+        const loginUserStore = useloginUserStore()
+        const newToken = loginUserStore.jwt
+        if (newToken) {
+            sessionStorage.setItem('authToken', newToken);
+        } else {
+            sessionStorage.removeItem('authToken');
+        }
         return response;
     },
     (error) => {
@@ -36,4 +38,4 @@ axiosInstance.interceptors.response.use(
     }
 );
 
-export default axiosInstance
+export default axiosInstance;

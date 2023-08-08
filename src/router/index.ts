@@ -6,6 +6,9 @@ import ProductsByCategories from '.././categories/components/FilterProductsByCat
 import CxposUser from '../conexion-pos-user/component/ConexionPosUser.vue'
 import Signup from '../users/components/Signup.vue'
 import Login from '../users/components/Login.vue'
+import allProducts from '../products/components/GetProductsAuthUser.vue';
+import { useloginUserStore } from '../users/stores/login.store';
+
 const routes = [
   {
     path: '/',
@@ -16,6 +19,12 @@ const routes = [
     path: '/products/:idalmacen',
     name: 'products-by-idalmacen',
     component: Products,
+  },
+  {
+    path: '/products',
+    name: 'all-products',
+    component: allProducts,
+    meta: { requiresAuth: true }
   },
   {
     path: '/categories',
@@ -48,5 +57,22 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  const store = useloginUserStore()
+  console.log(from)
+  const isAuthenticated = store.jwt !== null;
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isAuthenticated) {
+      next({ name: 'conexion-pos-user-login' });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+
 
 export default router;

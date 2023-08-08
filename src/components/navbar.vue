@@ -21,6 +21,9 @@
           <li class="nav-item">
             <a class="navbar-brand" href="/conexion-pos-user">Registrar usuario de Conexion Pos</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link"><router-link to="/products">Editar productos</router-link></a>
+          </li>
         </ul>
       </div>
     </div>

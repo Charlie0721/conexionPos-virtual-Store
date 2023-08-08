@@ -9,25 +9,21 @@ export const useloginUserStore = defineStore('loginUserStore', {
     state: () => {
         return {
             user: {} as LoginUserInterface,
-            jwt: '' as string,
-            data: [] as any
+            jwt: null as string | null,
+            errorData: [] as any
         }
     },
 
     actions: {
-
         async login(loginUser: LoginUserInterface) {
             try {
-                this.user = loginUser
-                const responseLoginUser = await loginUserService.LoginUser(this.user)
-                console.log(responseLoginUser)
-
-            } catch (error) {
-                console.log(error)
+                this.user = loginUser;
+                const responseLoginUser = await loginUserService.LoginUser(this.user);
+                this.jwt = responseLoginUser.data.access_token;
+            } catch (error: any) {
+                this.errorData = error.response.data.message;
             }
         }
-
     }
-
 
 })

@@ -37,6 +37,7 @@ import { LoginUserInterface } from '../interface/Login.interface'
 import { useloginUserStore } from '../stores/login.store'
 import Navbar from '../../components/navbar.vue'
 import Swal from 'sweetalert2';
+import router from '../../router/index';
 const loginUserStore = useloginUserStore();
 const user = reactive<LoginUserInterface>({
     username: "",
@@ -45,7 +46,7 @@ const user = reactive<LoginUserInterface>({
 
 class LoginUserComponent {
 
-   async loginUser() {
+    async loginUser() {
         if (user.username === "") {
             Swal.fire({
                 title: '¡Atención!',
@@ -57,7 +58,7 @@ class LoginUserComponent {
             user.password = "";
             return
         }
-        if (user.password == "") {
+        if (user.password === "") {
             Swal.fire({
                 title: '¡Atención!',
                 text: 'Ingrese la contraseña !',
@@ -68,7 +69,39 @@ class LoginUserComponent {
             user.password = "";
             return
         }
-
+        sessionStorage.removeItem('authToken');
+        const response:any = await loginUserStore.login(user)
+        if(!response){
+            Swal.fire({
+                title: '¡Atención!',
+                text: `${loginUserStore.errorData}`,
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+            user.username = "";
+            user.password = "";
+            return
+        }
+        if (!loginUserStore.jwt) {
+            Swal.fire({
+                title: '¡Atención!',
+                text: `${loginUserStore.errorData}`,
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+            user.username = "";
+            user.password = "";
+            return
+         
+        }
+         Swal.fire({
+            title: '¡Confirmado!',
+            text: 'Usuario Valido !',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+        });
+        router.push('/products')
+        return response
 
     }
 
