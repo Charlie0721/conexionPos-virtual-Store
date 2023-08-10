@@ -28,7 +28,6 @@ export const useloginUserStore = defineStore('loginUserStore', {
     },
     checkAuthentication() {
       const storedToken = localStorage.getItem('authToken');
-      console.log("storedToken", storedToken)
       if (storedToken) {
         this.jwt = storedToken;
       }

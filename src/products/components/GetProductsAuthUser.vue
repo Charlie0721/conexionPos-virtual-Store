@@ -24,13 +24,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
             <br>
-
             <div class="row w-100">
-
                 <div class="col-md-4 mb-4" style="width: 18rem;" v-for="product in allProductsStore.allProducts "
                     :key="product.idproducto">
                     <div class="card card text-dark bg-ligth">
@@ -43,7 +39,8 @@
                             <p class="card-text">SKU: {{ product.barcode }}</p>
                             <h5 class="card-text">Precio: $ {{ new Intl.NumberFormat("de-DE").format(product.precioventa) }}
                             </h5>
-                            <a href="#" class="btn btn-primary">Editar Producto</a>
+                            <a class="btn btn-primary" @click="productsComponent.goToEditProduct(product.idproducto)">Editar
+                                Producto</a>
                         </div>
                     </div>
                 </div>
@@ -60,6 +57,7 @@ import { useloginUserStore } from '../../users/stores/login.store'
 import router from '../../router/index';
 import Swal from 'sweetalert2';
 import Navbar from '../../components/navbar.vue'
+
 const loginUserStore = useloginUserStore()
 const allProductsStore = useAllProductsStore();
 const searchInput = ref("");
@@ -82,7 +80,6 @@ class ProductsComponent {
         description: string) {
 
         const isAuthenticated = loginUserStore.checkAuthentication();
-        console.log("isAuthenticated", isAuthenticated)
         if (!isAuthenticated) {
             router.push('/login/conexion-pos-user');
             return;
@@ -113,6 +110,10 @@ class ProductsComponent {
             allProductsStore.limit = 10;
             this.searchoneProduct();
         }
+    }
+
+    goToEditProduct(productId: number) {
+        router.push(`/product/get-product/${productId}`)
     }
 }
 const productsComponent = new ProductsComponent()

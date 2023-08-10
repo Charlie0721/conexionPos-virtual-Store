@@ -7,6 +7,8 @@ import CxposUser from '../conexion-pos-user/component/ConexionPosUser.vue'
 import Signup from '../users/components/Signup.vue'
 import Login from '../users/components/Login.vue'
 import allProducts from '../products/components/GetProductsAuthUser.vue';
+import GetOneProduct from '../products/components/UpdateProduct.vue';
+
 import { useloginUserStore } from '../users/stores/login.store';
 
 const routes = [
@@ -25,6 +27,11 @@ const routes = [
     name: 'all-products',
     component: allProducts,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/product/get-product/:idproducto',
+    name: 'one-product',
+    component: GetOneProduct
   },
   {
     path: '/categories',
@@ -63,13 +70,13 @@ router.beforeEach((to, from, next) => {
   const store = useloginUserStore();
   const isAuthenticated = store.checkAuthentication();
   if (to.matched.some(record => record.meta.requiresAuth)) {
-      if (!isAuthenticated) {
-          next({ name: 'conexion-pos-user-login' });
-      } else {
-          next();
-      }
-  } else {
+    if (!isAuthenticated) {
+      next({ name: 'conexion-pos-user-login' });
+    } else {
       next();
+    }
+  } else {
+    next();
   }
 });
 
