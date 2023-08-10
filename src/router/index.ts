@@ -7,7 +7,7 @@ import CxposUser from '../conexion-pos-user/component/ConexionPosUser.vue'
 import Signup from '../users/components/Signup.vue'
 import Login from '../users/components/Login.vue'
 import allProducts from '../products/components/GetProductsAuthUser.vue';
-//import { useloginUserStore } from '../users/stores/login.store';
+import { useloginUserStore } from '../users/stores/login.store';
 
 const routes = [
   {
@@ -58,20 +58,20 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   const store = useloginUserStore()
-//   console.log(from)
-//   const isAuthenticated = store.jwt !== null;
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     if (!isAuthenticated) {
-//       next({ name: 'conexion-pos-user-login' });
-//     } else {
-//       next();
-//     }
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  console.log(from)
+  const store = useloginUserStore();
+  const isAuthenticated = store.checkAuthentication();
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+      if (!isAuthenticated) {
+          next({ name: 'conexion-pos-user-login' });
+      } else {
+          next();
+      }
+  } else {
+      next();
+  }
+});
 
 
 

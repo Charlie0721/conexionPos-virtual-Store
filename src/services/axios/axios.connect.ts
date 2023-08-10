@@ -18,24 +18,25 @@ axiosInstance.interceptors.request.use(
         return config;
     },
     (error) => {
+        console.log("error desde interceptors request", error)
         return Promise.reject(error);
     }
 );
 
 axiosInstance.interceptors.response.use(
     (response) => {
-        const loginUserStore = useloginUserStore()
-        const newToken = loginUserStore.jwt
-        if (newToken) {
+        const newToken = response.data.access_token;
+        if (newToken !== undefined && newToken !== null) {
             localStorage.setItem('authToken', newToken);
-        } else {
-            localStorage.removeItem('authToken');
+            const loginUserStore = useloginUserStore();
+            loginUserStore.jwt = newToken;
+            console.log("desde axios", loginUserStore.jwt)
         }
         return response;
     },
     (error) => {
+        console.log("error desde interceptors response", error)
         return Promise.reject(error);
     }
 );
-
 export default axiosInstance;

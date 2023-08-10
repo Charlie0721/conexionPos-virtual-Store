@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, nextTick } from 'vue';
 import { LoginUserInterface } from '../interface/Login.interface'
 import { useloginUserStore } from '../stores/login.store'
 import Navbar from '../../components/navbar.vue'
@@ -47,6 +47,7 @@ const user = reactive<LoginUserInterface>({
 class LoginUserComponent {
 
     async loginUser() {
+
         if (user.username === "") {
             Swal.fire({
                 title: '¡Atención!',
@@ -69,30 +70,28 @@ class LoginUserComponent {
             user.password = "";
             return
         }
-        const response: any = await loginUserStore.login(user)
-        console.log(response)
-        sessionStorage.removeItem('authToken');
-        if (loginUserStore.jwt) {
+        try {
+            const response = await loginUserStore.login(user);
 
-            Swal.fire({
-                title: '¡Confirmado!',
-                text: 'Usuario Valido !',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-            router.push('/products')
-            return response
-        } else {
-            Swal.fire({
-                title: '¡Atención!',
-                text: `${loginUserStore.errorData}`,
-                icon: 'warning',
-                confirmButtonText: 'Aceptar'
-            });
-            user.username = "";
-            user.password = "";
-            return
-
+            if (loginUserStore.jwt) {
+                loginUserStore.setToken(loginUserStore.jwt);
+                nextTick(() => {
+                    router.push({ name: 'all-products' });
+                });
+                return response;
+            } else {
+                Swal.fire({
+                    title: '¡Atención!',
+                    text: `${loginUserStore.errorData}`,
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar'
+                });
+                user.username = "";
+                user.password = "";
+                return;
+            }
+        } catch (error) {
+            console.log("error desde componente", error)
         }
 
     }
