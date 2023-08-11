@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { AllProductsService } from '../services/get-all-products.service';
-import { AllProductsInterface } from '../interfaces/getProdcuts.interface';
+import { AllProductsInterface } from '../interfaces/getProducts.interface';
 
 const allProductsService = new AllProductsService();
 

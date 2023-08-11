@@ -4,10 +4,10 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-header">
-                <h2 class="text-center">INFORMACION DEL PRODUCTO  <br> {{ updateProduct.descripcion }} </h2>
+                <h2 class="text-center">INFORMACION DEL PRODUCTO <br> {{ updateProduct.descripcion }} </h2>
             </div>
             <div class="card-body">
-                <form>
+                <form @submit.prevent="updateProductComponent.updateProductFromComponent">
                     <div class="mb-3">
                         <label for="idproducto" class="form-label">ID del Producto</label>
                         <input type="number" class="form-control" id="idproducto" name="idproducto" disabled
@@ -50,6 +50,9 @@
 
                     <button type="submit" class="btn btn-primary w-100">Actualizar Producto</button>
                 </form>
+                <br>
+                <button class="btn btn-warning w-100" @click="updateProductComponent.goToPhotoFileUpload">Fotografia de
+                    producto</button>
             </div>
         </div>
     </div>
@@ -58,10 +61,11 @@
 <script lang="ts" setup>
 import { ref, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
+import router from '../../router/index';
 import { useUpdateProductStore } from '../stores/update-product.store';
 import Navbar from '../../components/navbar.vue';
 import { UpdateProductInterface } from '../interfaces/updateProduct.interface';
-
+import Swal from 'sweetalert2';
 const updateProductStore = useUpdateProductStore();
 const route = useRoute();
 
@@ -88,8 +92,33 @@ class UpdateProductComponent {
 
     async getProductData() {
         const response = await updateProductStore.getOneProduct(this.productId);
-        
+
         updateProduct.value = { ...response };
+    }
+
+    async updateProductFromComponent() {
+
+        const response = await updateProductStore.updateProductAction(this.productId, updateProduct.value)
+        if (updateProductStore.status === 200) {
+            console.log(response)
+            return Swal.fire({
+                title: '¡Confirmacion!',
+                text: 'Producto actualizado satisfactoriamente !',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            })
+        } else {
+
+            return Swal.fire({
+                title: 'Atencion!',
+                text: 'No se pudo actualizar !',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            })
+        }
+    }
+    goToPhotoFileUpload() {
+        router.push(`/product/upload-photo-file/${this.productId}`)
     }
 }
 
