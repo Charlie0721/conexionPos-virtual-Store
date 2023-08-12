@@ -1,35 +1,25 @@
-import { defineStore } from 'pinia'
-import { PhotoFileInterface } from '../interfaces/uploadPhotoFile.interface'
-import { UploadPhotoFileService } from '../services/upload-photo-product.service'
-const uploadPhotoFileService = new UploadPhotoFileService()
+import { defineStore } from 'pinia';
+import { UploadPhotoFileService } from '../services/upload-photo-product.service';
+import { PhotoFileInterface } from '../interfaces/uploadPhotoFile.interface';
 
 export const usePhotoFileUpdateStore = defineStore('photoFileUpdateStore', {
-
-    state: () => {
-        return {
-
-            photoFile: {} as PhotoFileInterface,
-            productId: 0 as number
-        }
-    },
+    state: () => ({
+        productId: 0,
+    }),
     actions: {
+        async uploadFile(productId: number, file: any) {
+            const formData = new FormData();
+            formData.append('file', file);
 
-        async uploadFile(productId: number, data: PhotoFileInterface) {
             try {
-                this.productId = productId;
-                this.photoFile = data;
-                const responseFile = await uploadPhotoFileService.uploadPhotoService(this.productId, this.photoFile)
-                console.log(responseFile)
+                const uploadPhotoService = new UploadPhotoFileService();
+                const response = await uploadPhotoService.uploadPhotoService(productId, formData);
 
-
+                console.log(response)
+                return response;
             } catch (error) {
-                console.log(error)
+                throw error;
             }
-
-        }
-
-
-    }
-
-
-})
+        },
+    },
+});
