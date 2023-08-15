@@ -2,6 +2,13 @@
   <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Tienda Virtual</a>
+
+
+      <a class="navbar-brand"><router-link to="/shopping-cart" v-if="productsByWarehouseStore.totalItemsInCart > 0"><i
+            class="bi bi-cart-fill"></i> <span class="badge bg-danger">
+            {{ productsByWarehouseStore.totalItemsInCart }}
+          </span></router-link></a>
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -34,7 +41,9 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useGetWarehouseStore } from '../stores/getWarehouse.store'
+import { useProductsByWarehouseStore } from '../products/stores/get-products-by-warehouse.store'
 const getWareHouseStore = useGetWarehouseStore();
+const productsByWarehouseStore = useProductsByWarehouseStore()
 getWareHouseStore.warehouseId
 onMounted(async () => {
   await getWarehouse()

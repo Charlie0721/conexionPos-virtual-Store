@@ -13,3 +13,21 @@ export interface AllProductsInterface {
     url_foto: string;
 }
 
+export interface GetProductsByWareHouseInterface {
+
+    barcode: string;
+    cantidad: number;
+    codigo: string;
+    codiva: string;
+    costo: number;
+    descripcion: string;
+    idproducto: number;
+    nomalmacen: string;
+    precioventa: number;
+    ultcosto: number;
+    url_foto: string;
+ }
+
+ export interface CartProduct extends GetProductsByWareHouseInterface {
+    quantity: number;
+}

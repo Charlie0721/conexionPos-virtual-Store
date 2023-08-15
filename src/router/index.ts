@@ -9,7 +9,7 @@ import Login from '../users/components/Login.vue'
 import allProducts from '../products/components/GetProductsAuthUser.vue';
 import GetOneProduct from '../products/components/UpdateProduct.vue';
 import  UploadPhoto from '../products/components/UploadPhotoFIle.vue';
-
+import ShoppingCart  from '../shopping-cart/components/ShoppingCartComponent.vue'
 import { useloginUserStore } from '../users/stores/login.store';
 
 const routes = [
@@ -63,6 +63,11 @@ const routes = [
     path: '/login/conexion-pos-user',
     name: 'conexion-pos-user-login',
     component: Login,
+  },
+  {
+    path: '/shopping-cart',
+    name: 'shopping-cart',
+    component: ShoppingCart,
   },
 ];
 
