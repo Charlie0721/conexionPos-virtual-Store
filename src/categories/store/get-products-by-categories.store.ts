@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { GetProductsByCategoriesService } from '../service/getProductsByCategories.service';
-
+import { ProductsByCategoryInterface } from '../interface/category.interface'
 const getProductsByCategoriesService = new GetProductsByCategoriesService();
 
 export const useProductsByCategories = defineStore('productsByCategories', {
@@ -8,7 +8,7 @@ export const useProductsByCategories = defineStore('productsByCategories', {
     state: () => {
         return {
 
-            products: [] as any[],
+            products: [] as Array<ProductsByCategoryInterface>,
             warehoseId: 0 as number,
             categoryName: '' as string,
             limit: 10 as number,
@@ -28,6 +28,7 @@ export const useProductsByCategories = defineStore('productsByCategories', {
                 this.description = description;
                 const response = await getProductsByCategoriesService.getProductsByCategories(this.warehoseId, this.categoryName, this.page, this.limit, this.description);
                 this.products = response.data
+                console.log(this.products)
 
             } catch (error) {
                 console.log(error);

@@ -42,7 +42,7 @@
                         <p class="card-text">SKU: {{ product.barcode }}</p>
                         <h5 class="card-text">Precio: $ {{ new Intl.NumberFormat("de-DE").format(product.precioventa) }}
                         </h5>
-                        <button class="btn btn-primary" @click="addToShoppingCart(product)"><i class="bi bi-cart-plus-fill">
+                        <button class="btn btn-primary" @click="addToCart(product)"><i class="bi bi-cart-plus-fill">
                                 Añadir </i></button>
                     </div>
                 </div>
@@ -61,7 +61,8 @@ import { useRoute } from 'vue-router';
 import { useProductsByWarehouseStore } from '../stores/get-products-by-warehouse.store';
 import defaultImageUrl from '../../assets/logo_celulares.png';
 import Navbar from '../../components/navbar.vue'
-import { GetProductsByWareHouseInterface } from '../interfaces/getProducts.interface';
+import { CartProduct,GetProductsByWareHouseInterface } from '../interfaces/getProducts.interface';
+import {useCartStore} from '../../shopping-cart/stores/shopping-car.store'
 const productsByWarehouseStore = useProductsByWarehouseStore();
 let barcode = ref("");
 let description = ref("");
@@ -101,9 +102,10 @@ const handleSearchInput = () => {
     }
 };
 
-const addToShoppingCart = (product: GetProductsByWareHouseInterface) => {
-    productsByWarehouseStore.addToCart(product)
-
+const addToCart = (product: GetProductsByWareHouseInterface) => {
+    const cartStore = useCartStore(); 
+    const productWithQuantity: CartProduct = { ...product, quantity: 1 }; 
+    cartStore.addToCart(productWithQuantity);
 }
 
 </script>

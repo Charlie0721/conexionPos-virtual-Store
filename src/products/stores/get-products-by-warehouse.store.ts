@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ProductsByWarehouseservice } from '../services/get-products-by-warehouse.service';
-import { GetProductsByWareHouseInterface, CartProduct } from '../interfaces/getProducts.interface'
+import { GetProductsByWareHouseInterface } from '../interfaces/getProducts.interface'
 
 const productsByWareHosueService = new ProductsByWarehouseservice();
 export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore', {
@@ -12,8 +12,7 @@ export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore
             barcode: "" as string,
             description: "" as string,
             warehouseId: 0 as number,
-            shoppingCart: [] as Array<CartProduct>,
-            totalItemsInCart: 0 as number,
+
         }
     },
     actions: {
@@ -82,17 +81,7 @@ export const useProductsByWarehouseStore = defineStore('productsByWarehouseStore
                 console.log(error);
             }
         },
-        addToCart(product: GetProductsByWareHouseInterface) {
-            const existingProduct = this.shoppingCart.find(item => item.idproducto === product.idproducto);
 
-            if (existingProduct) {
-                existingProduct.quantity++;
-            } else {
-                this.shoppingCart.push({ ...product, quantity: 1 });
-            }
-
-            this.totalItemsInCart = this.shoppingCart.reduce((total, item) => total + item.quantity, 0);
-        },
 
     },
 

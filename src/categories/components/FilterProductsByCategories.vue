@@ -42,7 +42,8 @@
                         <p class="card-text">SKU: {{ product.barcode }}</p>
                         <h5 class="card-text">Precio: $ {{ new Intl.NumberFormat("de-DE").format(product.precioventa) }}
                         </h5>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <button class="btn btn-primary" @click="addToCart(product)"><i class="bi bi-cart-plus-fill">
+                                Añadir </i></button>
                     </div>
                 </div>
             </div>
@@ -57,6 +58,8 @@ import { useProductsByCategories } from '../store/get-products-by-categories.sto
 import defaultImageUrl from '../../assets/logo_celulares.png';
 import Navbar from '../../components/navbar.vue'
 const productBycategoriesStore = useProductsByCategories();
+import { useCartStore } from '../../shopping-cart/stores/shopping-car.store'
+import { CartProduct, ProductsByCategoryInterface } from '../interface/category.interface'
 const route = useRoute();
 let warehouseId = Number(route.params.idalmacen);
 let categoryName = String(route.params.nombre);
@@ -69,7 +72,7 @@ onMounted(async () => {
 
 async function getProduts(warehouseId: number, categoryName: string, page: number, limit: number, description: string) {
 
-    const productsByCategories = await productBycategoriesStore.getProductsByCategories(warehouseId, categoryName, page, limit,description);
+    const productsByCategories = await productBycategoriesStore.getProductsByCategories(warehouseId, categoryName, page, limit, description);
     return productsByCategories
 }
 const searchoneProduct = async () => {
@@ -83,6 +86,12 @@ const handleSearchInput = () => {
         searchoneProduct();
     }
 };
+
+const addToCart = (product: ProductsByCategoryInterface) => {
+    const cartStore = useCartStore();
+    const productWithQuantity: CartProduct = { ...product, quantity: 1 }; 
+    cartStore.addToCart(productWithQuantity);
+}
 </script>
 
 <style scoped>
