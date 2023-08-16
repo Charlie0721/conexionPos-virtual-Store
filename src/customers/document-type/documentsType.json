@@ -1,0 +1,42 @@
+[
+    {
+        "Documento": "Registro Civil",
+        "TipoId": "11"
+    },
+    {
+        "Documento": "Tarjeta de Identidad",
+        "TipoId": "12"
+    },
+    {
+        "Documento": "Cédula de Ciudadanía",
+        "TipoId": "13"
+    },
+    {
+        "Documento": "Tarjeta de Extranjería",
+        "TipoId": "21"
+    },
+    {
+        "Documento": "Cédula de Extranjería",
+        "TipoId": "22"
+    },
+    {
+        "Documento": "N.I.T",
+        "TipoId": "31"
+    },
+    {
+        "Documento": "Pasaporte",
+        "TipoId": "41"
+    },
+    {
+        "Documento": "Documento de Identificación Extranjero",
+        "TipoId": "42"
+    },
+    {
+        "Documento": "N.I.T. de Otro País",
+        "TipoId": "50"
+    },
+    {
+        "Documento": "N.U.I.P.",
+        "TipoId": "91"
+    }
+]

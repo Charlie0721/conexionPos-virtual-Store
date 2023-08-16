@@ -55,6 +55,7 @@
                 </tbody>
             </table>
         </div>
+        <CustomerComponent />
     </div>
 </template>
 
@@ -64,6 +65,7 @@ import Navbar from '../../components/navbar.vue'
 import defaultImageUrl from '../../assets/logo_celulares.png';
 import { useCartStore } from '../stores/shopping-car.store'
 import { CartProduct } from '../../products/interfaces/getProducts.interface';
+import CustomerComponent from '../../customers/components/CustomerComponent.vue'
 const cartStore = useCartStore();
 
 const removeFromCart = (product: CartProduct) => {

@@ -28,8 +28,7 @@ export const useProductsByCategories = defineStore('productsByCategories', {
                 this.description = description;
                 const response = await getProductsByCategoriesService.getProductsByCategories(this.warehoseId, this.categoryName, this.page, this.limit, this.description);
                 this.products = response.data
-                console.log(this.products)
-
+             
             } catch (error) {
                 console.log(error);
             }
