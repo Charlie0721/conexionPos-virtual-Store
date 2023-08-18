@@ -12,6 +12,7 @@ const countriesService = new CountriesService()
 const departmentsService = new DepartmentsService()
 const municipalitiesService = new MunicipalitiesService()
 
+
 export const useCustomersStore = defineStore('customerStore', {
 
     state: () => {
@@ -55,6 +56,16 @@ export const useCustomersStore = defineStore('customerStore', {
         },
         getDocuments() {
             return this.documents
+        },
+
+        async create(customer: CustomerInterface) {
+            try {
+                this.createCustomer = customer
+                const response = await createCustomerService.create(this.createCustomer)
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+            }
         }
 
     }

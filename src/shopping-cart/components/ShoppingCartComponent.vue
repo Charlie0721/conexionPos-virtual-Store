@@ -1,5 +1,6 @@
 <template>
     <Navbar />
+    <pre>{{ customerStore.createCustomer }}</pre>
     <br>
     <div class="container">
         <h2 class="mb-4 text-center">Carrito</h2>
@@ -65,8 +66,10 @@ import Navbar from '../../components/navbar.vue'
 import defaultImageUrl from '../../assets/logo_celulares.png';
 import { useCartStore } from '../stores/shopping-car.store'
 import { CartProduct } from '../../products/interfaces/getProducts.interface';
+import {useCustomersStore} from '../../customers/stores/customer.store'
 import CustomerComponent from '../../customers/components/CustomerComponent.vue'
 const cartStore = useCartStore();
+const customerStore=useCustomersStore()
 
 const removeFromCart = (product: CartProduct) => {
     cartStore.removeFromCart(product);

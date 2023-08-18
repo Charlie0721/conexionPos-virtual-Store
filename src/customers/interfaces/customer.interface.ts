@@ -26,4 +26,6 @@ export interface CustomerInterface {
     usapuntos: number;
     idpais: number;
     matriculamercan: string;
+    RegiRenta: string;
+    autoretenedor:number;
 }
