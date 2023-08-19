@@ -27,5 +27,11 @@ export interface CustomerInterface {
     idpais: number;
     matriculamercan: string;
     RegiRenta: string;
-    autoretenedor:number;
+    autoretenedor: number;
+}
+
+export interface SearchCustomerInterface {
+
+    nit: string
+
 }

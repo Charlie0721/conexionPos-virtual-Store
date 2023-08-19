@@ -1,17 +1,18 @@
 import { defineStore } from 'pinia'
 import { CountriesInterface, DepartmentsInterface, MunicipalitiesInterface } from '../interfaces/countries.interfaces'
-import { CustomerInterface } from '../interfaces/customer.interface';
+import { CustomerInterface, SearchCustomerInterface } from '../interfaces/customer.interface';
 import { CreateCustomerService } from '../services/create-customer.service'
 import { CountriesService } from '../services/get-countries.service'
 import { DepartmentsService } from '../services/get-departments.service'
 import { MunicipalitiesService } from '../services/get-municipalities.service'
 import documentType from '../document-type/documentsType.json';
+import { SearchCustomerService } from '../services/search-customer.service'
 
 const createCustomerService = new CreateCustomerService()
 const countriesService = new CountriesService()
 const departmentsService = new DepartmentsService()
 const municipalitiesService = new MunicipalitiesService()
-
+const searchCustomerService = new SearchCustomerService()
 
 export const useCustomersStore = defineStore('customerStore', {
 
@@ -21,7 +22,10 @@ export const useCustomersStore = defineStore('customerStore', {
             countries: [] as Array<CountriesInterface>,
             departments: [] as Array<DepartmentsInterface>,
             municipalities: [] as Array<MunicipalitiesInterface>,
-            documents: documentType
+            documents: documentType,
+            searchCustomerByNit: {} as SearchCustomerInterface,
+            customerFound: {} as CustomerInterface,
+            notFound: [] as any
         }
     },
     actions: {
@@ -66,6 +70,25 @@ export const useCustomersStore = defineStore('customerStore', {
             } catch (error) {
                 console.log(error)
             }
+        },
+        async searchCustomer(customer: SearchCustomerInterface) {
+
+            try {
+                this.searchCustomerByNit = customer
+                const response = await searchCustomerService.search(this.searchCustomerByNit)
+                if (response.status === 201) {
+                    this.customerFound = response.data
+                    return this.customerFound
+                }
+                if (response.data.status == 404) {
+                    this.notFound = response.data.message
+                    return this.notFound
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+
         }
 
     }
