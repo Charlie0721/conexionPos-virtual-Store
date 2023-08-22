@@ -218,7 +218,7 @@ class CustomerComponent {
 
         customerFound.value = true;
         customer.value = { ...customer.value, ...response };
-        console.log("customer.value", customer.value)
+
         isFormEnabled.value = false;
     }
 
@@ -317,7 +317,6 @@ class CustomerComponent {
     }
 
 }
-
 const customerComponent = new CustomerComponent()
 
 
