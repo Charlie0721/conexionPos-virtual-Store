@@ -2,16 +2,18 @@
     <div class="container mt-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="text-center">Datos Cliente</h3>
+                <h3 class="text-center">{{ customerFound ? 'Editar Cliente' : 'Crear Cliente' }}</h3>
             </div>
             <div class="card-body">
-                <form @submit.prevent="customerComponent.sendCustomer">
+                <form
+                    @submit.prevent="customerFound ? customerComponent.updateCustomerComponent : customerComponent.sendCustomer">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="nit" class="form-label">NIT ó C.C</label>
                             <input type="text" class="form-control" id="nit" v-model="customer.nit"
                                 @input="customerComponent.recalculateDigito"
-                                @keypress.prevent.enter="customerComponent.searchCustomerByNit(customer.nit)" required />
+                                @keydown.enter.prevent="customerComponent.searchCustomerByNit(customer.nit)"
+                                @blur="customerComponent.searchCustomerByNit(customer.nit)" required />
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="digito" class="form-label">Dígito</label>
@@ -101,7 +103,9 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <button type="submit" class="btn btn-primary" :disabled="!isFormEnabled">Guardar</button>
+                            <button v-if="customerFound" @click="customerComponent.updateCustomerComponent"
+                                class="btn btn-primary">Editar</button>
+                            <button v-else @click="customerComponent.sendCustomer" class="btn btn-primary">Guardar</button>
                         </div>
                     </div>
                 </form>
@@ -117,7 +121,9 @@ import { useCustomersStore } from '../stores/customer.store'
 const customerStore = useCustomersStore()
 const documents = ref<{ Documento: string; TipoId: string }[]>([])
 import { CustomerInterface, SearchCustomerInterface } from '../interfaces/customer.interface'
+const customerFound = ref(false);
 import Swal from 'sweetalert2'
+import { UpdateCustomerInterface } from '../interfaces/update-customer.interface';
 onMounted(async () => {
 
     await customerComponent.getAllCountries();
@@ -158,26 +164,63 @@ const customer = ref<CustomerInterface>({
     autoretenedor: 0
 })
 
+const customerUpdate = ref<UpdateCustomerInterface>({
+
+    nit: undefined,
+    digito: undefined,
+    tipopersona: undefined,
+    nombres: undefined,
+    nombre2: undefined,
+    apellidos: undefined,
+    apellido2: undefined,
+    nomcomercial: undefined,
+    direccion: undefined,
+    telefono: undefined,
+    email: undefined,
+    email2: undefined,
+    iddepto: undefined,
+    idmunicipio: undefined,
+    TipoId: undefined,
+    tipofactura: undefined,
+    cliente: undefined,
+    idactividad: undefined,
+    idregimen: undefined,
+    aplicaprom: undefined,
+    idclasifterc: undefined,
+    inactivo: undefined,
+    usapuntos: undefined,
+    idpais: undefined,
+    matriculamercan: undefined,
+    RegiRenta: undefined,
+    autoretenedor: undefined
+
+})
 
 
 class CustomerComponent {
 
     async searchCustomerByNit(nit: string) {
+        searchCustomer.value.nit = nit;
+        const response = await customerStore.searchCustomer(searchCustomer.value);
 
-        searchCustomer.value.nit = nit
-        const response = await customerStore.searchCustomer(searchCustomer.value)
         if (response.status === 404) {
             isFormEnabled.value = true;
-            this.cleanForm()
+            customerFound.value = false;
             return Swal.fire({
                 title: '¡Atencion!',
                 text: `${response.message}`,
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
-            })
+            });
         }
+
+        customerFound.value = true;
         customer.value = { ...customer.value, ...response };
         isFormEnabled.value = false;
+
+        if (!customerFound.value) {
+            this.cleanForm();
+        }
     }
     cleanForm() {
         customer.value = {
@@ -248,8 +291,29 @@ class CustomerComponent {
         customer.value.apellido2 = secondSurname
         let tradeName = customer.value.nombres.toUpperCase() + ' ' + customer.value.apellidos.toUpperCase()
         customer.value.nomcomercial = tradeName
+        let address = customer.value.direccion.toUpperCase()
+        customer.value.direccion = address
+        customerFound.value = true;
         return await customerStore.create(customer.value)
     }
+
+    async updateCustomerComponent() {
+        let firtsName = customer.value.nombres.toUpperCase()
+        customerUpdate.value.nombres = firtsName
+        let secondName = customer.value.nombre2.toUpperCase()
+        customerUpdate.value.nombre2 = secondName
+        let surname = customer.value.apellidos.toUpperCase()
+        customerUpdate.value.apellidos = surname
+        let secondSurname = customer.value.apellido2.toUpperCase()
+        customerUpdate.value.apellido2 = secondSurname
+        let tradeName = customer.value.nombres.toUpperCase() + ' ' + customer.value.apellidos.toUpperCase()
+        customerUpdate.value.nomcomercial = tradeName
+        let address = customer.value.direccion.toUpperCase()
+        customerUpdate.value.direccion = address
+        customerUpdate.value = { ...customer.value }
+        await customerStore.updateCustomer(customerStore.customerId, customerUpdate.value)
+    }
+
 }
 
 const customerComponent = new CustomerComponent()

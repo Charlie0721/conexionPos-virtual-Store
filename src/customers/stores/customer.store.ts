@@ -1,19 +1,21 @@
 import { defineStore } from 'pinia'
 import { CountriesInterface, DepartmentsInterface, MunicipalitiesInterface } from '../interfaces/countries.interfaces'
 import { CustomerInterface, SearchCustomerInterface } from '../interfaces/customer.interface';
+import { UpdateCustomerInterface } from '../interfaces/update-customer.interface';
 import { CreateCustomerService } from '../services/create-customer.service'
 import { CountriesService } from '../services/get-countries.service'
 import { DepartmentsService } from '../services/get-departments.service'
 import { MunicipalitiesService } from '../services/get-municipalities.service'
 import documentType from '../document-type/documentsType.json';
 import { SearchCustomerService } from '../services/search-customer.service'
+import { UpdateCustomerService } from '../services/update-customer.service'
 
 const createCustomerService = new CreateCustomerService()
 const countriesService = new CountriesService()
 const departmentsService = new DepartmentsService()
 const municipalitiesService = new MunicipalitiesService()
 const searchCustomerService = new SearchCustomerService()
-
+const updateCustomerService = new UpdateCustomerService()
 export const useCustomersStore = defineStore('customerStore', {
 
     state: () => {
@@ -25,7 +27,10 @@ export const useCustomersStore = defineStore('customerStore', {
             documents: documentType,
             searchCustomerByNit: {} as SearchCustomerInterface,
             customerFound: {} as CustomerInterface,
-            notFound: [] as any
+            notFound: [] as any,
+            updateCustomerObject: {} as UpdateCustomerInterface,
+            customerId: 0 as number,
+            responseUpdatedCustomer:[] as any
         }
     },
     actions: {
@@ -76,6 +81,8 @@ export const useCustomersStore = defineStore('customerStore', {
             try {
                 this.searchCustomerByNit = customer
                 const response = await searchCustomerService.search(this.searchCustomerByNit)
+                this.customerId = response.data.idtercero
+
                 if (response.status === 201) {
                     this.customerFound = response.data
                     return this.customerFound
@@ -89,8 +96,18 @@ export const useCustomersStore = defineStore('customerStore', {
                 console.log(error)
             }
 
-        }
+        },
 
+        async updateCustomer(customerId: number, update: UpdateCustomerInterface) {
+            this.updateCustomerObject = update;
+            try {
+                const response = await updateCustomerService.update(customerId, this.updateCustomerObject);
+                console.log(response);
+                this.responseUpdatedCustomer=response.status
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 
 
