@@ -206,53 +206,55 @@ class CustomerComponent {
         if (response.status === 404) {
             isFormEnabled.value = true;
             customerFound.value = false;
-            return Swal.fire({
+            await Swal.fire({
                 title: '¡Atencion!',
                 text: `${response.message}`,
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
             });
+            this.cleanFormForCreation();
+            return;
         }
 
         customerFound.value = true;
         customer.value = { ...customer.value, ...response };
+        console.log("customer.value", customer.value)
         isFormEnabled.value = false;
+    }
 
-        if (!customerFound.value) {
-            this.cleanForm();
-        }
+
+    cleanFormForCreation() {
+        customerFound.value = false;
+        const currentNit = customer.value.nit;
+        customer.value.nit = currentNit;
+        customer.value.digito = 0;
+        customer.value.tipopersona = 1;
+        customer.value.nombres = '';
+        customer.value.nombre2 = '';
+        customer.value.apellidos = '';
+        customer.value.apellido2 = '';
+        customer.value.nomcomercial = '';
+        customer.value.direccion = '';
+        customer.value.telefono = '';
+        customer.value.email = '';
+        customer.value.email2 = '';
+        customer.value.iddepto = 0;
+        customer.value.idmunicipio = 0;
+        customer.value.TipoId = '';
+        customer.value.tipofactura = 0;
+        customer.value.cliente = 1;
+        customer.value.idactividad = 496;
+        customer.value.idregimen = 2;
+        customer.value.aplicaprom = 1;
+        customer.value.idclasifterc = 1;
+        customer.value.inactivo = 0;
+        customer.value.usapuntos = 1;
+        customer.value.idpais = 0;
+        customer.value.matriculamercan = '000000';
+        customer.value.RegiRenta = '05';
+        customer.value.autoretenedor = 0;
     }
-    cleanForm() {
-        customer.value = {
-            nit: '',
-            digito: 0,
-            tipopersona: 1,
-            nombres: '',
-            nombre2: '',
-            apellidos: '',
-            apellido2: '',
-            nomcomercial: '',
-            direccion: '',
-            telefono: '',
-            email: '',
-            email2: '',
-            iddepto: 0,
-            idmunicipio: 0,
-            TipoId: '',
-            tipofactura: 0,
-            cliente: 1,
-            idactividad: 496,
-            idregimen: 2,
-            aplicaprom: 1,
-            idclasifterc: 1,
-            inactivo: 0,
-            usapuntos: 1,
-            idpais: 0,
-            matriculamercan: '000000',
-            RegiRenta: '05',
-            autoretenedor: 0
-        }
-    }
+
 
     async getAllCountries() {
         await customerStore.getCountries()
