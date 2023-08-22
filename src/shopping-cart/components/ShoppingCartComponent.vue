@@ -65,10 +65,8 @@ import Navbar from '../../components/navbar.vue'
 import defaultImageUrl from '../../assets/logo_celulares.png';
 import { useCartStore } from '../stores/shopping-car.store'
 import { CartProduct } from '../../products/interfaces/getProducts.interface';
-import {useCustomersStore} from '../../customers/stores/customer.store'
 import CustomerComponent from '../../customers/components/CustomerComponent.vue'
 const cartStore = useCartStore();
-const customerStore=useCustomersStore()
 
 const removeFromCart = (product: CartProduct) => {
     cartStore.removeFromCart(product);
