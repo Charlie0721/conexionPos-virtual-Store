@@ -86,7 +86,6 @@ const updateQuantity = (product: CartProduct) => {
     }
     cartStore.updateQuantity(product, product.quantity);
 };
-
 const calculateTotal = () => {
     return cartStore.cart.reduce(
         (total: number, product: CartProduct) => total + (product.precioventa * product.quantity),
